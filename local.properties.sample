@@ -1,0 +1,3 @@
+# Kopiere in local.properties und trage hier deine Keys ein:
+BINANCE_API_KEY=DEIN_API_KEY
+BINANCE_API_SECRET=DEIN_API_SECRET
