@@ -10,28 +10,19 @@ data class Signal(
 
 object SignalParser {
     /**
-     * Erwartetes Format:
-     *   "Order filled SYMBOL ±MENGE"
-     * Beispiel:
-     *   "Order filled BTCUSDT -0.05255"  → SELL 0.05255
-     *   "Order filled ETHUSDT 0.10000"   → BUY 0.10000
+     * Erwartetes Notification-Text-Format:
+     *   "Your <SYMBOL> order in Futures Copy Trading has been filled. Entry Price <PRICE>, Quantity: <QTY>"
+     * Beispiele:
+     *   "Your ENAUSDT order in Futures Copy Trading has been filled. Entry Price 0.3549, Quantity: 166"
+     *   "Your 1000PEPEUSDT order in Futures Copy Trading has been filled. Entry Price 0.0129155, Quantity: -4581"
      */
     fun parse(text: String): Signal? {
-        // Nur Zeilen mit "Order filled" berücksichtigen
-        if (!text.startsWith("Order filled", ignoreCase = true)) return null
+        // Regex für Symbol & Qty
+        val regex = """Your\s+([A-Z0-9]+)\s+order.*Quantity:\s*(-?\d+(\.\d+)?)""".toRegex()
+        val match = regex.find(text) ?: return null
 
-        // Text in Teile splitten
-        val parts = text.split("\\s+".toRegex())
-        if (parts.size < 4) return null
-
-        // SYMBOL ist das 3. Element
-        val symbol = parts[2]
-
-        // Menge mit Vorzeichen ist das 4. Element
-        val amountStr = parts[3]
-        val rawQty = amountStr.toDoubleOrNull() ?: return null
-
-        // Side bestimmen und Menge positiv machen
+        val symbol = match.groupValues[1]
+        val rawQty = match.groupValues[2].toDoubleOrNull() ?: return null
         val side = if (rawQty < 0) "SELL" else "BUY"
         val qty = rawQty.absoluteValue
 
