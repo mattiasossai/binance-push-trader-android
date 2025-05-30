@@ -2,6 +2,8 @@ package com.mattiasossai.binancepushtrader
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.content.Intent
+import android.util.Log
 
 class NotificationService : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
