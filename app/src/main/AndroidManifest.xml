@@ -1,0 +1,33 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mattiasossai.binancepushtrader">
+
+    <!-- Erlaubnis, Notifications auszulesen -->
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"/>
+
+    <application
+        android:allowBackup="true"
+        android:label="Binance Push Trader"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <!-- Haupt-Activity -->
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Einstellungs-Activity -->
+        <activity android:name=".SettingsActivity"/>
+
+        <!-- Notification Listener Service -->
+        <service
+            android:name=".NotificationService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+
+    </application>
+</manifest>
